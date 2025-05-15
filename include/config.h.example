@@ -1,0 +1,11 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+// WiFi credentials
+const char* WIFI_SSID = "your_wifi_ssid";
+const char* WIFI_PASSWORD = "your_wifi_password";
+
+// Blinker auth
+const char* BLINKER_AUTH = "your_blinker_auth";
+
+#endif 
