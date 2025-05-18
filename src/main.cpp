@@ -29,14 +29,6 @@ void sendSignal(unsigned long signal) {
     Serial.println(signal);
     delay(100);
     digitalWrite(ledPin, LOW);   // 发送完成LED熄灭
-    if (signal == STOP_SIGNAL) {
-        BlinkerMIOT.powerState("off");
-        oState = false;
-    }
-    else if (signal == START_SIGNAL) {
-        BlinkerMIOT.powerState("on");
-        oState = true;
-    }
 }
 
 // 按钮回调函数
@@ -60,19 +52,14 @@ void miotPowerState(const String & state)
     BLINKER_LOG("need set power state: ", state);
 
     if (state == BLINKER_CMD_ON) {
+        BlinkerMIOT.powerState("on");
+        BlinkerMIOT.print();
         sendSignal(START_SIGNAL);
-        // 使用异步定时器，不会阻塞主循环
-        static unsigned long stopTimer = 0;
-        stopTimer = millis() + 180000;  // 设置3分钟后的时间点
-        
-        // 在loop函数中检查时间并发送停止信号
-        static bool stopScheduled = true;
-        if (stopScheduled && millis() >= stopTimer) {
-            sendSignal(STOP_SIGNAL);  // 3分钟后发送停止信号
-            stopScheduled = false;
-        }
+
     }
     else if (state == BLINKER_CMD_OFF) {
+        BlinkerMIOT.powerState("off");
+        BlinkerMIOT.print();
         sendSignal(STOP_SIGNAL);
     }
 }
